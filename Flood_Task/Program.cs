@@ -8,7 +8,29 @@ using System.Threading.Tasks;
 namespace Flood_Task
 {
     class Program
-    {       
+    {
+        static List<string> FileExist(string path)
+        {
+            List<string> input = new List<string>();
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    String line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        input.Add(line);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("File isnot exist");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
+            return input;
+        }
         static void DisplayPlane(Cell[,] plane, int maxValueX, int maxValueY)
         {
             for(int i=0; i<maxValueX; i++)
@@ -35,18 +57,11 @@ namespace Flood_Task
         static List<Wall> ReadFromFile(out int maxValueX, out int maxValueY, out int wallsNumber)
         {
             int waterBorder = 2;
-            List<string> input = new List<string>();
             int pointsNumber;
             string[] tempArr = new string[2];
             string path = "TestFile.txt";
-            using (StreamReader sr = new StreamReader(path))
-            {
-                String line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    input.Add(line);
-                }
-            }
+            List<string> input = FileExist(path);
+
             pointsNumber = Convert.ToInt32(input[0]);
             Point[] points = new Point[pointsNumber];
             int[] arrXCoord = new int[pointsNumber];
